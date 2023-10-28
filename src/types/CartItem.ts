@@ -2,7 +2,7 @@ import { Product } from "./Product";
 
 
 export type CartItem = {
-  qt: Number;
+  qt: number;
   product: Product;
 
 }

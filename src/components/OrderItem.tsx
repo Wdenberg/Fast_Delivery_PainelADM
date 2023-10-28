@@ -6,8 +6,9 @@ import { Box, Button, MenuItem, Select, SelectChangeEvent, Typography } from "@m
 type Props = {
   item: Order;
   onChageStatus: (id: number, newStatus: OrderStatus) => void;
+  onPrint: (order: Order) => void;
 }
-export const OrderItem = ({ item, onChageStatus }: Props) => {
+export const OrderItem = ({ item, onChageStatus, onPrint }: Props) => {
 
   const getStatusBackGroud = (status: OrderStatus) => {
     const statuses = {
@@ -22,6 +23,9 @@ export const OrderItem = ({ item, onChageStatus }: Props) => {
     onChageStatus(item.id, event.target.value as OrderStatus);
   }
 
+  const heandlePrintButton = () => {
+    onPrint(item);
+  }
 
   return (
 
@@ -33,7 +37,7 @@ export const OrderItem = ({ item, onChageStatus }: Props) => {
         <Box>
           <Typography component='p'>{DateFormat(item.orderDate)}</Typography>
           <Typography component='p'>{item.userName}</Typography>
-          <Button size='small' sx={{ color: '#FFF', p: 0 }}>Imprimir</Button>
+          <Button onClick={heandlePrintButton} size='small' sx={{ color: '#FFF', p: 0 }}>Imprimir</Button>
         </Box>
         <Box>
           <Typography component='p' sx={{ fontSize: 24 }}>#{item.id}</Typography>
