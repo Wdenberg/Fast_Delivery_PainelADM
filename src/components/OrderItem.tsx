@@ -1,3 +1,4 @@
+import { DateFormat } from "@/libs/dateFormat";
 import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { Box, Button, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
@@ -20,6 +21,8 @@ export const OrderItem = ({ item, onChageStatus }: Props) => {
   const handleStatusChange = (event: SelectChangeEvent) => {
     onChageStatus(item.id, event.target.value as OrderStatus);
   }
+
+
   return (
 
     <Box sx={{ border: '1px solid #EEE', color: '#FFF', borderRadius: 2, overflow: 'hidden' }}>
@@ -28,7 +31,7 @@ export const OrderItem = ({ item, onChageStatus }: Props) => {
         alignItems: 'center', p: 1, backgroundColor: getStatusBackGroud(item.status)
       }}>
         <Box>
-          <Typography component='p'>{item.orderDate}</Typography>
+          <Typography component='p'>{DateFormat(item.orderDate)}</Typography>
           <Typography component='p'>{item.userName}</Typography>
           <Button size='small' sx={{ color: '#FFF', p: 0 }}>Imprimir</Button>
         </Box>

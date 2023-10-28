@@ -5,7 +5,7 @@ import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { Refresh, Search } from "@mui/icons-material";
 import { Box, Button, CircularProgress, Grid, InputAdornment, Skeleton, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 
 
 const Page = () => {
@@ -13,20 +13,17 @@ const Page = () => {
   const [serachInput, setSerachInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [filterOrders, setFilterOrders] = useState<Order[]>([]);
 
   const getOrders = async () => {
     // Limpa o campo de pesquisa
     setSerachInput('');
-
     // Seta como o Arrey do Pedidos Vazio
     setOrders([]);
-
     // seta o Loading pra aparecer os Skeleton do grid
     setLoading(true);
-
     // Pegando da Api
     const orderList: Order[] = await api.getOrders();
-
     // setando a Lista de pedidos
     setOrders(orderList);
     // seta o loading como falso(Retira o Loading e Skeleton do grid some)
@@ -37,12 +34,28 @@ const Page = () => {
     getOrders();
   }, []);
 
+  //Filtargem dos Pedidos
+  useEffect(() => {
+    setSerachInput('');
+    setFilterOrders(orders);
+  }, [orders]);
 
-  const hendleSerachInput = () => {
+  const hendleSerachKey = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.code.toLowerCase() === 'enter' || event.code.toLowerCase() === 'numpadenter') {
+      if (serachInput != '') {
+        let newOrders: Order[] = [];
 
-  }
+        for (let i in orders) {
+          if (orders[i].id.toString() === serachInput) {
+            newOrders.push(orders[i]);
+          }
+        }
 
-  const hendleSerachKey = () => {
+        setFilterOrders(newOrders);
+      } else {
+        setFilterOrders(orders);
+      }
+    }
 
   }
 
@@ -67,11 +80,11 @@ const Page = () => {
 
         <TextField
           value={serachInput}
-          onChange={hendleSerachInput}
+          onChange={e => setSerachInput(e.target.value)}
           onKeyUp={hendleSerachKey}
           placeholder="Pesquise um Pedido"
           variant="standard"
-          disabled
+          disabled={loading}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -102,8 +115,8 @@ const Page = () => {
           </>
         }
 
-        {!loading && orders.map((item, index) => (
-          <Grid item xs={1}>
+        {!loading && filterOrders.map((item, index) => (
+          <Grid key={index} item xs={1}>
             <OrderItem
               item={item}
               onChageStatus={handleChageStatus}
