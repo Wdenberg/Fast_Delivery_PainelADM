@@ -1,7 +1,9 @@
+import { Category } from "@/types/Category";
 import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { Product } from "@/types/Product";
-import { Password } from "@mui/icons-material";
+
+
 
 
 const tmpProduct: Product = {
@@ -31,7 +33,7 @@ export const api = {
             token: '123'
           });
         }
-      }, 1000)
+      }, 1000);
     })
 
   },
@@ -48,7 +50,7 @@ export const api = {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve({ error: '' });
-      }, 1000)
+      }, 1000);
     });
   },
 
@@ -94,10 +96,53 @@ export const api = {
           });
         }
         resolve(orders);
-      }, 1000)
+      }, 1000);
     });
   },
   chabgeOrderStatus: async (id: number, newStatus: OrderStatus) => {
     return true;
+  },
+
+
+  getProducts: async (): Promise<Product[]> => {
+    const list: Product[] = [
+      { ...tmpProduct, id: 1 },
+      { ...tmpProduct, id: 2 },
+      { ...tmpProduct, id: 3 },
+      { ...tmpProduct, id: 4 },
+      { ...tmpProduct, id: 5 },
+      { ...tmpProduct, id: 6 },
+      { ...tmpProduct, id: 7 },
+      { ...tmpProduct, id: 8 },
+      { ...tmpProduct, id: 9 },
+      { ...tmpProduct, id: 10 }
+    ];
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(list);
+      }, 200);
+    })
+  },
+
+  getCategories: async (): Promise<Category[]> => {
+    const list: Category[] = [
+      { id: 99, name: 'Burgues' },
+      { id: 88, name: 'Refigerantes' },
+      { id: 97, name: 'Doces' }
+    ];
+
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(list);
+      }, 200);
+    })
+  },
+
+  deletProduct: async (id: number): Promise<boolean> => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    })
   }
 }

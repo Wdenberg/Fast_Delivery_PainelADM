@@ -48,10 +48,10 @@ export const Header = () => {
             <Link href='/pedidos' style={{ textDecoration: 'none' }}>
               <Button sx={{ color: '#fff' }}>Pedidos</Button>
             </Link>
-            <Link href='/pedidos' style={{ textDecoration: 'none' }}>
+            <Link href='/produtos' style={{ textDecoration: 'none' }}>
               <Button sx={{ color: '#fff' }}>Produtos</Button>
             </Link>
-            <Link href='/pedidos' style={{ textDecoration: 'none' }}>
+            <Link href='/categorias' style={{ textDecoration: 'none' }}>
               <Button sx={{ color: '#fff' }}>Categorias</Button>
             </Link>
             <Button sx={{ color: '#fff' }} onClick={hendledLogout}>Sair</Button>
