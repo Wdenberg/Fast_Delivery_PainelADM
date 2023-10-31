@@ -144,5 +144,22 @@ export const api = {
         resolve(true);
       }, 1000);
     })
+  },
+
+  createProdutc: async (form: FormData) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    })
+  },
+
+  updateProdutc: async (form: FormData) => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    })
   }
+
 }

@@ -2,14 +2,18 @@
 "use client";
 import { ProductTableSkeleton } from "@/components/PorductTableSkeleton";
 import { ProdutcTableItem } from "@/components/ProductTableItem";
+import { ProdutcEditDialog } from "@/components/ProdutcEditDialog";
 import { api } from "@/libs/api";
 import { Category } from "@/types/Category";
 import { Product } from "@/types/Product";
 import { Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
+import { FormEvent } from "react";
 
 
 const Page = () => {
+
+  //As Steate do Sistemas
   const [loading, setLoading] = useState(false);
 
   const [products, setProdutcs] = useState<Product[]>([]);
@@ -17,6 +21,10 @@ const Page = () => {
   const [showDeletDialog, setShowDeletDialog] = useState(false);
   const [productToDelet, setProdutcToDelete] = useState<Product>();
   const [loadingDelete, setLoadingDelete] = useState(false);
+
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [productToEdit, setProdutcToEdit] = useState<Product>();
+  const [loadingEditDialog, setLoadingEditDialog] = useState(false);
 
   useEffect(() => {
     getProducts();
@@ -30,11 +38,7 @@ const Page = () => {
 
 
   }
-  const handleNewProduct = () => {
 
-  }
-
-  const hendleEditProdutc = (product: Product) => { }
 
 
   //Delete Product
@@ -50,6 +54,38 @@ const Page = () => {
       setShowDeletDialog(false);
       getProducts();
     }
+  }
+
+
+  // New/Edit Product
+
+  const handleNewProduct = () => {
+    setProdutcToEdit(undefined);
+    setEditDialogOpen(true);
+  }
+
+  const hendleEditProdutc = (product: Product) => {
+
+    setProdutcToEdit(product);
+    setEditDialogOpen(true);
+  }
+  const handleSaveEditDialog = async (event: FormEvent<HTMLFormElement>) => {
+
+    const form = new FormData(event.currentTarget);
+    console.log(form);
+
+    setLoadingEditDialog(true);
+
+    if (productToEdit) {
+      form.append('id', productToEdit.id.toString());
+      await api.updateProdutc(form);
+    } else {
+      await api.createProdutc(form);
+    }
+
+    setLoadingEditDialog(false);
+    setEditDialogOpen(false);
+    getProducts();
   }
 
   return (
@@ -105,6 +141,14 @@ const Page = () => {
             <Button disabled={loadingDelete} onClick={handleConfimeDelet}>Sim</Button>
           </DialogContent>
         </Dialog>
+        <ProdutcEditDialog
+          open={editDialogOpen}
+          onClose={() => setEditDialogOpen(false)}
+          onSave={handleSaveEditDialog}
+          disabled={loadingEditDialog}
+          produtc={productToEdit}
+          categories={categories}
+        />
       </Box>
 
     </>
